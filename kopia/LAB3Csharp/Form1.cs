@@ -38,9 +38,11 @@ namespace LAB3Csharp
                 var SLN_FILES = Directory.GetFiles(fbd.SelectedPath, "*.sln", SearchOption.AllDirectories);
                 
                 List<string> CSPROJ_FILES = new List<string>();
-                
+                Directory.CreateDirectory(fbd.SelectedPath + "\\" + "kopia" + "\\");
                 foreach (var SLN_FILE in SLN_FILES)
                 {
+                    string slnfile = Path.GetFileName(SLN_FILE);
+                    File.Copy(SLN_FILE, fbd.SelectedPath + "\\" + "kopia" + "\\" + slnfile, true);
                     var file = File.ReadAllText(SLN_FILE);
 
                     MatchCollection matches = regex.Matches(file);
@@ -66,7 +68,7 @@ namespace LAB3Csharp
                     XNamespace msbuild = "http://schemas.microsoft.com/developer/msbuild/2003";
 
                     DirectoryInfo di = Directory.CreateDirectory(fbd.SelectedPath + "\\" +"kopia" + "\\" + subfolder + "\\");
-
+                    File.Copy(dir, fbd.SelectedPath + "\\" + "kopia" + "\\" + CSPROJ_FILE, true);
                     foreach (var resource in xmldoc.Descendants(msbuild + "Compile"))
                     {
                         string includePath = resource.Attribute("Include").Value;
@@ -78,6 +80,7 @@ namespace LAB3Csharp
                             finaldir = fbd.SelectedPath + "\\" + "kopia" + "\\"  + subfolder + "\\" + subsubfolder + "\\";
                         Directory.CreateDirectory(finaldir);
                         File.Copy(dir2 + includePath, fbd.SelectedPath + "\\" + "kopia" + "\\"  + subfolder + "\\" + includePath, true);
+
 
 
                     }
@@ -105,6 +108,9 @@ namespace LAB3Csharp
                         Directory.CreateDirectory(finaldir);
                         File.Copy(dir2 + includePath, fbd.SelectedPath + "\\" + "kopia" + "\\" + subfolder + "\\" + includePath, true);
                     }
+
+                    
+                    
                 }
 
             }
